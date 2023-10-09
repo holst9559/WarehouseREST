@@ -8,6 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import static com.example.warehouserest.entities.Category.MALT;
@@ -16,7 +17,7 @@ import static com.example.warehouserest.entities.Category.MALT;
 @ApplicationScoped
 public class Warehouse implements WarehouseService{
 
-    private final List<Product> products = new ArrayList<>();
+    private final List<Product> products = new CopyOnWriteArrayList<>();
     private final int maxRating = 5;
 
 
@@ -36,8 +37,20 @@ public class Warehouse implements WarehouseService{
         return newProduct.toRecord();
     }
 
-    public ProductRecord updateProduct(ProductRecord productUpdate) {
+    /*public ProductRecord updateProduct(ProductRecord productUpdate) {
         return products.stream().filter(product -> product.getId().equals(productUpdate.id())).findFirst()
+                .map(product -> {
+                    product.setName(productUpdate.name());
+                    product.setCategory(productUpdate.category());
+                    product.setRating(productUpdate.rating());
+                    product.setUpdatedAt(LocalDate.now());
+                    return product.toRecord();
+                }).orElseThrow(() -> new IllegalArgumentException("Product ID does not exist"));
+    }*/
+
+
+    public ProductRecord updateProduct(String id, ProductRecord productUpdate) {
+        return products.stream().filter(product -> product.getId().equals(id)).findFirst()
                 .map(product -> {
                     product.setName(productUpdate.name());
                     product.setCategory(productUpdate.category());
