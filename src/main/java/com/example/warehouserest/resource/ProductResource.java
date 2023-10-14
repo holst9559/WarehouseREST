@@ -3,6 +3,7 @@ package com.example.warehouserest.resource;
 import com.example.warehouserest.entities.ProductRecord;
 import com.example.warehouserest.service.WarehouseService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -30,9 +31,9 @@ public class ProductResource {
     }
 
     @POST
-    public Response addNewProduct(ProductRecord product){
+    public Response addNewProduct(@Valid ProductRecord product){
         warehouseService.addNewProduct(product);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(201).entity(Response.Status.CREATED).build();
     }
 
     @GET
@@ -42,9 +43,9 @@ public class ProductResource {
     }
 
     @PATCH
-    @Path("/{id}")
-    public Response updateProduct(@PathParam("id") String id, ProductRecord productUpdate){
-        warehouseService.updateProduct(id, productUpdate);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateProduct(@Valid ProductRecord productUpdate){
+        warehouseService.updateProduct(productUpdate);
         return Response.ok().build();
     }
 

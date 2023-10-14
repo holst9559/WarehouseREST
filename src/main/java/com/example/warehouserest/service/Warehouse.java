@@ -5,6 +5,7 @@ import com.example.warehouserest.entities.Category;
 import com.example.warehouserest.entities.Product;
 import com.example.warehouserest.entities.ProductRecord;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -23,7 +24,7 @@ public class Warehouse implements WarehouseService{
 
 
 
-    public ProductRecord addNewProduct(ProductRecord product) {
+    public ProductRecord addNewProduct(@Valid ProductRecord product) {
         if (product.name() == null || product.name().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         } else if (product.rating() > maxRating || product.rating() < 0) {
@@ -37,7 +38,7 @@ public class Warehouse implements WarehouseService{
         return newProduct.toRecord();
     }
 
-    /*public ProductRecord updateProduct(ProductRecord productUpdate) {
+    public ProductRecord updateProduct(@Valid ProductRecord productUpdate) {
         return products.stream().filter(product -> product.getId().equals(productUpdate.id())).findFirst()
                 .map(product -> {
                     product.setName(productUpdate.name());
@@ -46,19 +47,8 @@ public class Warehouse implements WarehouseService{
                     product.setUpdatedAt(LocalDate.now());
                     return product.toRecord();
                 }).orElseThrow(() -> new IllegalArgumentException("Product ID does not exist"));
-    }*/
-
-
-    public ProductRecord updateProduct(String id, ProductRecord productUpdate) {
-        return products.stream().filter(product -> product.getId().equals(id)).findFirst()
-                .map(product -> {
-                    product.setName(productUpdate.name());
-                    product.setCategory(productUpdate.category());
-                    product.setRating(productUpdate.rating());
-                    product.setUpdatedAt(LocalDate.now());
-                    return product.toRecord();
-                }).orElseThrow(() -> new IllegalArgumentException("Product ID does not exist"));
     }
+
 
     public List<ProductRecord> getAllProducts() {
         Product testProduct = new Product("Malt", MALT, 2, LocalDate.now(), LocalDate.now());

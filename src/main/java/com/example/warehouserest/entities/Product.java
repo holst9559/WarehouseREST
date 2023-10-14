@@ -1,5 +1,10 @@
 package com.example.warehouserest.entities;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
@@ -7,8 +12,11 @@ import java.util.UUID;
 
 public class Product {
     private final String id;
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
     private Category category;
+    @Min(value = 0, message = "Rating cannot be less than 0")
+    @Max(value = 5, message = "Rating cannot be higher than 5")
     private int rating;
     private final LocalDate createdAt;
     private LocalDate updatedAt;
