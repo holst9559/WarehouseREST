@@ -26,20 +26,21 @@ public class ProductResource {
     }
 
     @GET
-    public List<ProductRecord> getAllProducts(){
-        return warehouseService.getAllProducts();
+    public Response getAllProducts(){
+        return Response.ok(warehouseService.getAllProducts()).build();
     }
 
     @POST
     public Response addNewProduct(@Valid ProductRecord product){
         warehouseService.addNewProduct(product);
-        return Response.status(201).entity(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(warehouseService.addNewProduct((product))).build();
     }
 
     @GET
     @Path("/{id}")
-    public ProductRecord getProductById(@PathParam("id") String id){
-        return warehouseService.getProductById(id);
+    public Response getProductById(@PathParam("id") String id){
+        return Response.ok(warehouseService.getProductById(id)).build();
     }
 
     @PATCH
