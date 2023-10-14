@@ -46,8 +46,7 @@ public class ProductResource {
     @PATCH
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateProduct(@Valid ProductRecord productUpdate){
-        warehouseService.updateProduct(productUpdate);
-        return Response.ok().build();
+        return Response.ok(warehouseService.updateProduct(productUpdate)).build();
     }
 
 }
