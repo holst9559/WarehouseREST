@@ -1,6 +1,7 @@
 package com.example.warehouserest.resource;
 
 import com.example.warehouserest.entities.ProductRecord;
+import com.example.warehouserest.interceptor.Log;
 import com.example.warehouserest.service.WarehouseService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
+@Log
 public class ProductResource {
     private WarehouseService warehouseService;
 

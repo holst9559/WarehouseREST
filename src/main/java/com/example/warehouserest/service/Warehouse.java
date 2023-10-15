@@ -4,6 +4,7 @@ package com.example.warehouserest.service;
 import com.example.warehouserest.entities.Category;
 import com.example.warehouserest.entities.Product;
 import com.example.warehouserest.entities.ProductRecord;
+import com.example.warehouserest.exception.ProductNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 
@@ -27,8 +28,6 @@ public class Warehouse implements WarehouseService{
     public ProductRecord addNewProduct(@Valid ProductRecord product) {
         if (product.name() == null || product.name().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
-        } else if (product.rating() > maxRating || product.rating() < 0) {
-            throw new IllegalArgumentException("Rating cannot be higher than 5");
         }
 
         Product newProduct = new Product(product);
@@ -61,7 +60,7 @@ public class Warehouse implements WarehouseService{
     public ProductRecord getProductById(String productId) {
         return products.stream().filter(product -> product.getId().equals(productId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Product ID does not exist"))
+                .orElseThrow(ProductNotFoundException::new)
                 .toRecord();
     }
 
